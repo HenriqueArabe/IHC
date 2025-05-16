@@ -1,0 +1,22 @@
+{
+  "energy": [
+    {
+      "id": "5de0",
+      "email": "emailteste@gmail.com",
+      "nome": "Nome Teste",
+      "horasTV": 2,
+      "horasVideoGames": 2,
+      "minutosBanho": 2,
+      "qtdEletrodomesticos": 2
+    },
+    {
+      "id": "1eb1",
+      "email": "emailteste@gmail.com",
+      "nome": "Nome Teste",
+      "horasTV": 2,
+      "horasVideoGames": 2,
+      "minutosBanho": 2,
+      "qtdEletrodomesticos": 2
+    }
+  ]
+}
