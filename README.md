@@ -1,6 +1,6 @@
 # Sustentabilidade Transparente
 
-Projeto IHC - 6° Semestre C.C. - Manhã
+Projeto IHC - 6° Semestre C.C. Manhã -
 Professora Valéria Farinazzo Martins
 
 Por:
