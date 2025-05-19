@@ -38,10 +38,11 @@ const Energia = () => {
     } | null;
   } | null>(null);
 
+  // Consumo de energia em kWh (valores aproximados realistas)
   const consumoKWh = {
-    tv: 0.15,
-    videoGames: 0.2,
-    chuveiro: 5.5,
+    tv: 0.15,          // TV LED 40" - 150W por hora
+    videoGames: 0.2,   // Console moderno - 200W por hora
+    chuveiro: 5.5,     // Chuveiro elétrico - 5500W
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -64,11 +65,11 @@ const Energia = () => {
       return;
     }
 
-    // --- cálculo original (mantido) ---
+    // --- cálculos de consumo ---
     const consumoTV = Number(formData.horasTV) * consumoKWh.tv * 30;
     const consumoVideoGames = Number(formData.horasVideoGames) * consumoKWh.videoGames * 30;
     const consumoBanho = Number(formData.minutosBanho) * (consumoKWh.chuveiro / 60) * 30;
-    const consumoEletros = Number(formData.qtdEletrodomesticos) * 1.5; // diária, mas mantido conforme original
+    const consumoEletros = Number(formData.qtdEletrodomesticos) * 1.5; // kWh diários totais
 
     const totalConsumo = consumoTV + consumoVideoGames + consumoBanho + consumoEletros;
 
@@ -81,7 +82,7 @@ const Energia = () => {
 
     const resultadoCalculado = { total: totalConsumo, ferramentasIA };
     setResultado(resultadoCalculado);
-    // ------------------------------------
+    // ------------------------------
 
     // prepara payload para API
     const payload: EnergyPayload = {
@@ -133,18 +134,39 @@ const Energia = () => {
   return (
     <div className="min-h-screen pt-24 pb-16 bg-gradient-to-b from-[#e67e22] to-[#f39c12]">
       <div className="container mx-auto px-4">
-        <Link to="/" className="inline-flex items-center text-white mb-6">
-          <ArrowLeft size={20} className="mr-2" /> Voltar ao início
+        <Link to="/" className="inline-flex items-center text-white hover:text-yellow-100 mb-6 transition-colors">
+          <ArrowLeft size={20} className="mr-2" />
+          <span>Voltar ao início</span>
         </Link>
 
-        {/* Banner e descrição mantidos iguais ao seu código */}
+        {/* Banner */}
+        <div className="mb-10 rounded-lg overflow-hidden relative">
+          <img
+            src="https://images.unsplash.com/photo-1532601224476-15c79f2f7a51?w=800&auto=format&fit=crop"
+            alt="Energia"
+            className="w-full h-64 object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-amber-900/70 to-transparent flex items-center">
+            <div className="px-8">
+              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Energia</h1>
+              <Zap size={48} className="text-yellow-300 animate-pulse" />
+            </div>
+          </div>
+        </div>
+
+        <div className="eco-card p-8 mb-10 bg-gradient-to-b from-[#d35400]/90 to-[#f39c12]/90">
+          <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 text-center">Energia</h1>
+          <p className="text-white mb-6 max-w-3xl mx-auto text-center">
+            O consumo de energia elétrica está diretamente relacionado ao nosso estilo de vida moderno.
+            Os aparelhos eletrônicos, sistemas de climatização e até as ferramentas de inteligência artificial
+            que utilizamos diariamente têm um impacto significativo no meio ambiente.
+          </p>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Formulário */}
           <div className="eco-card p-6 bg-gradient-to-b from-[#d35400]/80 to-[#f39c12]/80">
-            <h2 className="text-2xl font-bold text-white mb-6 text-center">
-              Calculadora de consumo elétrico
-            </h2>
+            <h2 className="text-2xl font-bold text-white mb-6 text-center">Calculadora de consumo elétrico</h2>
             <form onSubmit={calcularConsumo}>
               <CalculatorInput
                 label="Email:"
@@ -195,38 +217,56 @@ const Energia = () => {
               />
 
               <div className="flex gap-4 mt-6">
-                <Button type="submit" className="flex-1">
+                <Button type="submit" className="flex-1 bg-amber-600 hover:bg-amber-700">
                   Calcular
                 </Button>
-                <Button variant="destructive" onClick={limparDados}>
+                <Button type="button" onClick={limparDados} className="bg-red-600 hover:bg-red-700">
                   Limpar
                 </Button>
               </div>
             </form>
           </div>
 
-          {/* Área de resultado */}
+          {/* Resultado */}
           <div className="eco-card p-6 bg-gradient-to-b from-[#d35400]/80 to-[#f39c12]/80">
             {resultado ? (
               <>
-                <h2 className="text-2xl font-bold text-white mb-6 text-center">
-                  Resultado
-                </h2>
+                <h2 className="text-2xl font-bold text-white mb-6 text-center">Resultado</h2>
                 <ResultCard
-                  title="Gasto mensal médio:"
+                  title="Sua residência tem um gasto mensal médio de:"
                   value={resultado.total.toFixed(1)}
                   unit="kWh"
                   className="mb-8"
-                  description="Consumo estimado por mês."
+                  description="Este valor equivale ao consumo médio de energia elétrica em sua residência durante um mês."
                 />
                 <h3 className="text-xl font-medium text-yellow-200 mb-4">
-                  Comparativo IA (kWh/mês)
+                  Comparativo de consultas a ferramentas de IA (consumo mensal):
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <ResultCard title="ChatGPT" value={resultado.ferramentasIA!.chatgpt.toFixed(1)} unit="kWh" />
-                  <ResultCard title="Copilot" value={resultado.ferramentasIA!.copilot.toFixed(1)} unit="kWh" />
-                  <ResultCard title="Grok" value={resultado.ferramentasIA!.grok.toFixed(1)} unit="kWh" />
-                  <ResultCard title="Gemini" value={resultado.ferramentasIA!.gemini.toFixed(1)} unit="kWh" />
+                  <ResultCard
+                    title="Consumo do ChatGPT"
+                    value={resultado.ferramentasIA!.chatgpt.toFixed(1)}
+                    unit="kWh"
+                    description="Consumo mensal estimado"
+                  />
+                  <ResultCard
+                    title="Consumo do Copilot"
+                    value={resultado.ferramentasIA!.copilot.toFixed(1)}
+                    unit="kWh"
+                    description="Consumo mensal estimado"
+                  />
+                  <ResultCard
+                    title="Consumo do Grok"
+                    value={resultado.ferramentasIA!.grok.toFixed(1)}
+                    unit="kWh"
+                    description="Consumo mensal estimado"
+                  />
+                  <ResultCard
+                    title="Consumo do Gemini"
+                    value={resultado.ferramentasIA!.gemini.toFixed(1)}
+                    unit="kWh"
+                    description="Consumo mensal estimado"
+                  />
                 </div>
               </>
             ) : (
