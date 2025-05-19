@@ -38,11 +38,10 @@ const Energia = () => {
     } | null;
   } | null>(null);
 
-  // Consumo de energia em kWh (valores aproximados realistas)
   const consumoKWh = {
-    tv: 0.15,          // TV LED 40" - 150W por hora
-    videoGames: 0.2,   // Console moderno - 200W por hora
-    chuveiro: 5.5,     // Chuveiro elétrico - 5500W
+    tv: 0.15,
+    videoGames: 0.2,
+    chuveiro: 5.5,
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -65,26 +64,23 @@ const Energia = () => {
       return;
     }
 
-    // --- cálculos de consumo ---
     const consumoTV = Number(formData.horasTV) * consumoKWh.tv * 30;
     const consumoVideoGames = Number(formData.horasVideoGames) * consumoKWh.videoGames * 30;
     const consumoBanho = Number(formData.minutosBanho) * (consumoKWh.chuveiro / 60) * 30;
-    const consumoEletros = Number(formData.qtdEletrodomesticos) * 1.5; // kWh diários totais
+    const consumoEletros = Number(formData.qtdEletrodomesticos) * 1.5;
 
     const totalConsumo = consumoTV + consumoVideoGames + consumoBanho + consumoEletros;
 
     const ferramentasIA = {
-      chatgpt: 0.0023 * totalConsumo,
-      copilot: 0.0028 * totalConsumo,
-      grok: 0.0035 * totalConsumo,
-      gemini: 0.0031 * totalConsumo
+      chatgpt: 32400000,
+      copilot: 27000000,
+      grok: 18100000,
+      gemini: 22500000
     };
 
     const resultadoCalculado = { total: totalConsumo, ferramentasIA };
     setResultado(resultadoCalculado);
-    // ------------------------------
 
-    // prepara payload para API
     const payload: EnergyPayload = {
       email: formData.email,
       nome: formData.nome,
@@ -139,7 +135,6 @@ const Energia = () => {
           <span>Voltar ao início</span>
         </Link>
 
-        {/* Banner */}
         <div className="mb-10 rounded-lg overflow-hidden relative">
           <img
             src="https://images.unsplash.com/photo-1532601224476-15c79f2f7a51?w=800&auto=format&fit=crop"
@@ -164,7 +159,6 @@ const Energia = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Formulário */}
           <div className="eco-card p-6 bg-gradient-to-b from-[#d35400]/80 to-[#f39c12]/80">
             <h2 className="text-2xl font-bold text-white mb-6 text-center">Calculadora de consumo elétrico</h2>
             <form onSubmit={calcularConsumo}>
@@ -227,7 +221,6 @@ const Energia = () => {
             </form>
           </div>
 
-          {/* Resultado */}
           <div className="eco-card p-6 bg-gradient-to-b from-[#d35400]/80 to-[#f39c12]/80">
             {resultado ? (
               <>
@@ -245,25 +238,25 @@ const Energia = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <ResultCard
                     title="Consumo do ChatGPT"
-                    value={resultado.ferramentasIA!.chatgpt.toFixed(1)}
+                    value="32.4 milhões"
                     unit="kWh"
                     description="Consumo mensal estimado"
                   />
                   <ResultCard
                     title="Consumo do Copilot"
-                    value={resultado.ferramentasIA!.copilot.toFixed(1)}
+                    value="27.0 milhões"
                     unit="kWh"
                     description="Consumo mensal estimado"
                   />
                   <ResultCard
                     title="Consumo do Grok"
-                    value={resultado.ferramentasIA!.grok.toFixed(1)}
+                    value="18.1 milhões"
                     unit="kWh"
                     description="Consumo mensal estimado"
                   />
                   <ResultCard
                     title="Consumo do Gemini"
-                    value={resultado.ferramentasIA!.gemini.toFixed(1)}
+                    value="22.5 milhões"
                     unit="kWh"
                     description="Consumo mensal estimado"
                   />
